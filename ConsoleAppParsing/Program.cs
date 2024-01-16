@@ -2,109 +2,289 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 
 namespace ConsoleAppParsing
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            //Адрес, который нам нужен
-            Dictionary<string, List<List<string>>> result = Parsing(url: "https://www.wienerborse.at/en/bonds/?c7928-page=2&per-page=50&cHash=ee36cc2f1ce3bd58128f6364139c8e3d");
-            if (result != null)
-            {
-                foreach(var item in result)
-                {
-                    Console.WriteLine(item.Key);
-                    Console.WriteLine("---------------------------");
-                    Console.WriteLine(item.Key);
-                    Console.WriteLine("---------------------------");
-                    item.Value.ForEach(r => Console.WriteLine(string.Join("\t", r)));
-                    Console.WriteLine("--------------------------\n");
-                }
-            }
-            Console.WriteLine("Нажмите любую клавишу, чтобы выйти из программы.");
-            Console.ReadKey();
-        }
 
-        private static Dictionary<string, List<List<string>>> Parsing(string url)
+        static void Main(string[] args)
         {
             try
             {
-                Dictionary<string, List<List<string>>> result = new Dictionary<string, List<List<string>>>();
-                using (HttpClientHandler handler = new HttpClientHandler { AllowAutoRedirect = false, 
-                    AutomaticDecompression = System.Net.DecompressionMethods.Deflate | 
-                    System.Net.DecompressionMethods.GZip | 
-                    System.Net.DecompressionMethods.None })
+                JSEWebsiteHtml jSE = new JSEWebsiteHtml();
+                string url1 = jSE.urlJSEWebsite;
+                using (HttpClientHandler handler = new HttpClientHandler
                 {
-                    using (var client = new HttpClient(handler))
+                    AllowAutoRedirect = false,
+                    AutomaticDecompression = DecompressionMethods.Deflate |
+                    DecompressionMethods.GZip |
+                    DecompressionMethods.None
+                })
+                {
+                    using (HttpClient httpClient = new HttpClient(handler))
                     {
-                        using (HttpResponseMessage response = client.GetAsync(url).Result)
+                        using (HttpResponseMessage responseMessage = httpClient.GetAsync(url1).Result)
                         {
-                            if (response.IsSuccessStatusCode)
+                            if (responseMessage.IsSuccessStatusCode)
                             {
-                                var htmlResponse = response.Content.ReadAsStringAsync().Result;
+                                var htmlResponse = responseMessage.Content.ReadAsStringAsync().Result;
                                 if (!string.IsNullOrEmpty(htmlResponse))
                                 {
-                                    //использование библиотеки
+                                    Console.WriteLine("Успешно!");
+                                    //использование библиотеки htmlAgillityPack
                                     HtmlDocument document = new HtmlDocument();
                                     document.LoadHtml(htmlResponse);
 
-                                    //указываем путь к таблице
-                                    var tables = document.DocumentNode.SelectNodes("//*[@id=\"c7928-module-container\"]");
+                                    //получение таблицы
+                                    var tables = document.DocumentNode.SelectNodes(".//div[@class='row']//div[@class='col-lg-12 col-md-12 col-sm-12 col-sx-12']//div[@class='table-responsive']");
 
-                                    //проверка на то, что таблицу получили
-                                    if(tables != null && tables.Count > 0)
+                                    //проверка на то, что таблица получена
+                                    if (tables != null && tables.Count > 0)
                                     {
-                                        foreach(var table in tables)
-                                        {
-                                            //для заголовков таблиц
-                                            var title1 = table.SelectSingleNode("//*[@id=\"tablesaw-954\"]/thead");
-                                            if(title1 != null)
-                                            {
-                                                //для значения в таблице
-                                                var bodyTable = table.SelectSingleNode("//*[@id=\"tablesaw-954\"]/tbody");
-                                                if(bodyTable != null)
-                                                {
-                                                    //строки в таблице
-                                                    var rows = table.SelectNodes("//*[@id=\"tablesaw-954\"]/tbody/tr[1]");
-                                                    if(rows != null && rows.Count > 0)
-                                                    {
-                                                        var res = new List<List<string>>();
+                                        Console.WriteLine("Таблица получена!");
 
-                                                        foreach(var row in rows)
+                                        foreach (var table in tables)
+                                        {
+                                            var titleTable = document.DocumentNode.SelectNodes(".//div[@class='titlePage']");
+
+                                            //проверка на заголовок
+                                            if (titleTable != null)
+                                            {
+                                                //для добавления полученных значений в коллекцию
+                                                List<JSEWebsiteHtml> elem = new List<JSEWebsiteHtml>();
+                                                for (int i = 0; i < titleTable.Count; i++)
+                                                {
+                                                    elem.Add(new JSEWebsiteHtml
+                                                    {
+                                                        Title = titleTable[i].InnerText.Trim()
+                                                    });
+                                                }
+                                                //для вывода названия таблицы
+                                                foreach (JSEWebsiteHtml item in elem)
+                                                {
+                                                    Console.WriteLine(string.Join(Environment.NewLine, item.Title));
+                                                }
+
+                                                //для заголовков столбцов таблицы
+                                                var titleTableCells = document.DocumentNode.SelectNodes(".//div[@class='table-responsive']//table");
+
+                                                //проверка, что у столбцов таблицы есть названия
+                                                if (titleTableCells != null)
+                                                {
+                                                    List<JSEWebsiteHtml> elemTitleTableCells = new List<JSEWebsiteHtml>();
+                                                    for(int i = 0; i < titleTableCells.Count; i++)
+                                                    {
+                                                        elemTitleTableCells.Add(new JSEWebsiteHtml
                                                         {
-                                                            //колонки в таблице
-                                                            var cells = row.SelectNodes("//*[@id=\"tablesaw-954\"]/tbody/tr[1]/td[1]");
-                                                            if(cells != null && cells.Count > 0)
+                                                            TitleCellsTable = titleTableCells[i].InnerText.Trim()
+                                                        });
+                                                    }
+
+                                                    foreach(JSEWebsiteHtml itemTitleCells in elemTitleTableCells)
+                                                    {
+                                                        Console.WriteLine(itemTitleCells.TitleCellsTable);
+                                                    }
+
+                                                    var rowsTables = document.DocumentNode.SelectNodes(".//tr");
+                                                    if (rowsTables != null)
+                                                    {
+                                                        Console.WriteLine("Ok. RowsTables.");
+
+                                                        List<JSEWebsiteHtml> elem3 = new List<JSEWebsiteHtml>();
+                                                        for(int i = 0; i < rowsTables.Count; i++)
+                                                        {
+                                                            elem3.Add(new JSEWebsiteHtml
                                                             {
-                                                                res.Add(new List<string>(cells.Select(c => c.InnerText)));
+                                                                RowsTables = rowsTables[i].InnerText.Trim()
+                                                            });
+                                                        }
+                                                        
+                                                        foreach(JSEWebsiteHtml item2 in elem3)
+                                                        {
+                                                            Console.WriteLine(item2.RowsTables);
+                                                        }
+
+                                                        foreach (var row in rowsTables)
+                                                        {
+                                                            var cellsTables = row.SelectNodes(".//td");
+                                                            if (cellsTables != null)
+                                                            {
+                                                                Console.WriteLine("Ok. CellsRows");
+                                                            }
+                                                            else
+                                                            {
+                                                                Console.WriteLine("no. cellsRows");
                                                             }
                                                         }
-                                                        result[title1.InnerText] = res;
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.WriteLine("no. rowsTables");
                                                     }
                                                 }
+                                                else
+                                                {
+                                                    Console.WriteLine("У таблицы нет названия столбцов.");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Не удалось получить заголовок.");
                                             }
                                         }
-                                        return result;
                                     }
-                                    else
-                                    {
-                                        Console.WriteLine("no tables");
-                                    }
+                                    else Console.WriteLine("Таблицу не удалось получить!");
+                                    
                                 }
+                                else Console.WriteLine("Не удалось подключиться.");
                             }
                         }
                     }
                 }
+                
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return null;
+            Console.ReadKey();
         }
+
     }
 }
+
+
+
+
+
+
+////заполнение коллекции заголовков столбцов таблицы
+//List<JSEWebsiteHtml> elemTableCellsTitle = new List<JSEWebsiteHtml>();
+//for(int i = 0; i <= titleTableCells.Count; i++)
+//{
+//    elemTableCellsTitle.Add(new JSEWebsiteHtml
+//    {
+//        TradeDate = DateTime.Parse(titleTableCells[i].InnerText),
+//        TradeType = titleTableCells[i + 1].InnerText.Trim(),
+//        ShortName = titleTableCells[i + 2].InnerText.Trim(),
+//        FutureExpiry = titleTableCells[i + 3].InnerText.Trim(),
+//        Strike = int.Parse(titleTableCells[i + 4].InnerText),
+//        Call_Put = titleTableCells[i + 5].InnerText.Trim(),
+//        Quantity = int.Parse(titleTableCells[i + 6].InnerText),
+//        Vol = double.Parse(titleTableCells[i + 7].InnerText),
+//        Premium = int.Parse(titleTableCells[i + 8].InnerText),
+//        Futures_Price = double.Parse(titleTableCells[i + 9].InnerText)
+//    });
+//}
+
+//вывод названия заголовков таблицы
+//foreach (JSEWebsiteHtml itemCellsTitle in elemTableCellsTitle)
+//{
+//    Console.WriteLine(string.Join("\t", 
+//        itemCellsTitle.TradeDate,
+//        itemCellsTitle.TradeType,
+//        itemCellsTitle.ShortName,
+//        itemCellsTitle.FutureExpiry,
+//        itemCellsTitle.Strike,
+//        itemCellsTitle.Call_Put,
+//        itemCellsTitle.Quantity,
+//        itemCellsTitle.Vol,
+//        itemCellsTitle.Premium,
+//        itemCellsTitle.Futures_Price
+//        ));
+//}
+
+
+
+
+
+
+
+
+
+
+//    private static Dictionary<string, List<List<string>>> Parsing(string url)
+//    {
+//        try
+//        {
+//            Dictionary<string, List<List<string>>> result = new Dictionary<string, List<List<string>>>();
+//            using (HttpClientHandler handler = new HttpClientHandler { AllowAutoRedirect = false, 
+//                AutomaticDecompression = System.Net.DecompressionMethods.Deflate | 
+//                System.Net.DecompressionMethods.GZip | 
+//                System.Net.DecompressionMethods.None })
+//            {
+//                using (var client = new HttpClient(handler))
+//                {
+//                    using (HttpResponseMessage response = client.GetAsync(url).Result)
+//                    {
+//                        if (response.IsSuccessStatusCode)
+//                        {
+//                            var htmlResponse = response.Content.ReadAsStringAsync().Result;
+//                            if (!string.IsNullOrEmpty(htmlResponse))
+//                            {
+//                                //использование библиотеки
+//                                HtmlDocument document = new HtmlDocument();
+//                                document.LoadHtml(htmlResponse);
+
+//                                //указываем путь к таблице
+//                                var tables = document.DocumentNode.SelectNodes("//*[@id=\"c7928-module-container\"]");
+
+//                                //проверка на то, что таблицу получили
+//                                if(tables != null && tables.Count > 0)
+//                                {
+//                                    foreach(var table in tables)
+//                                    {
+//                                        //для заголовков таблиц
+//                                        var title1 = table.SelectSingleNode("//*[@id=\"tablesaw-954\"]/thead");
+//                                        if(title1 != null)
+//                                        {
+//                                            //для значения в таблице
+//                                            var bodyTable = table.SelectSingleNode("//*[@id=\"tablesaw-954\"]/tbody");
+//                                            if(bodyTable != null)
+//                                            {
+//                                                //строки в таблице
+//                                                var rows = table.SelectNodes("//*[@id=\"tablesaw-954\"]/tbody/tr[1]");
+//                                                if(rows != null && rows.Count > 0)
+//                                                {
+//                                                    var res = new List<List<string>>();
+
+//                                                    foreach(var row in rows)
+//                                                    {
+//                                                        //колонки в таблице
+//                                                        var cells = row.SelectNodes("//*[@id=\"tablesaw-954\"]/tbody/tr[1]/td[1]");
+//                                                        if(cells != null && cells.Count > 0)
+//                                                        {
+//                                                            res.Add(new List<string>(cells.Select(c => c.InnerText)));
+//                                                        }
+//                                                    }
+//                                                    result[title1.InnerText] = res;
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                    return result;
+//                                }
+//                                else
+//                                {
+//                                    Console.WriteLine("no tables");
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        catch(Exception ex)
+//        {
+//            Console.WriteLine(ex.Message);
+//        }
+
+//        return null;
+//    }
+
+
+

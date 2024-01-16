@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Алексей\\Desktop\\Учеба\\Project\\ФС Сервис\\Парсинг сайта C#\\ConsoleAppParsing\\ConsoleAppParsing\\ConsoleAppParsing.csproj": {}
+    "C:\\Users\\Алексей\\Desktop\\Учеба\\github\\ParsingSaits\\ConsoleAppParsing\\ConsoleAppParsing.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Алексей\\Desktop\\Учеба\\Project\\ФС Сервис\\Парсинг сайта C#\\ConsoleAppParsing\\ConsoleAppParsing\\ConsoleAppParsing.csproj": {
+    "C:\\Users\\Алексей\\Desktop\\Учеба\\github\\ParsingSaits\\ConsoleAppParsing\\ConsoleAppParsing.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Алексей\\Desktop\\Учеба\\Project\\ФС Сервис\\Парсинг сайта C#\\ConsoleAppParsing\\ConsoleAppParsing\\ConsoleAppParsing.csproj",
+        "projectUniqueName": "C:\\Users\\Алексей\\Desktop\\Учеба\\github\\ParsingSaits\\ConsoleAppParsing\\ConsoleAppParsing.csproj",
         "projectName": "ConsoleAppParsing",
-        "projectPath": "C:\\Users\\Алексей\\Desktop\\Учеба\\Project\\ФС Сервис\\Парсинг сайта C#\\ConsoleAppParsing\\ConsoleAppParsing\\ConsoleAppParsing.csproj",
+        "projectPath": "C:\\Users\\Алексей\\Desktop\\Учеба\\github\\ParsingSaits\\ConsoleAppParsing\\ConsoleAppParsing.csproj",
         "packagesPath": "C:\\Users\\Алексей\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Алексей\\Desktop\\Учеба\\Project\\ФС Сервис\\Парсинг сайта C#\\ConsoleAppParsing\\ConsoleAppParsing\\obj\\",
+        "outputPath": "C:\\Users\\Алексей\\Desktop\\Учеба\\github\\ParsingSaits\\ConsoleAppParsing\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Алексей\\AppData\\Roaming\\NuGet\\NuGet.Config",
