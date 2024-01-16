@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ov7vpL/g07agExS3kh5ylU4wSH3UyuC/OzM7b8eEzdN182OUgCwuMzTmkxV1tag5lJPaGxlvL6Ig6PhzecxZcw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Алексей\\Desktop\\Учеба\\Project\\ФС Сервис\\Парсинг сайта C#\\ConsoleAppParsing\\ConsoleAppParsing\\ConsoleAppParsing.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Алексей\\.nuget\\packages\\htmlagilitypack\\1.11.57\\htmlagilitypack.1.11.57.nupkg.sha512"
+  ],
+  "logs": []
+}
