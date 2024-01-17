@@ -4,12 +4,13 @@ using System.Net.Http;
 using System.Net;
 using HtmlAgilityPack;
 using System.Linq;
+using System.Globalization;
 
 namespace ConsoleAppParsing
 {
     class GetTablesHtml
     {
-        public string GetTables(string url, string IdContainer, string tbody, string tr, string td, string a)
+        public string GetTables(string url, string IdContainer, string tbody, string tr, string td, string a, string pathWienerBoerse)
         {
             using (HttpClientHandler handler = new HttpClientHandler { 
                 AllowAutoRedirect=false,
@@ -35,16 +36,17 @@ namespace ConsoleAppParsing
                                 if(container != null)
                                 {
                                     var tableBody = document.GetElementbyId(IdContainer).ChildNodes.FindFirst(tbody).ChildNodes.Where(x => x.Name == tr).ToArray();
+                                    var paginationSait = document.DocumentNode.SelectNodes(".//div[@class='panel-footer']");
                                     foreach(var tblRow in tableBody)
-                                    {
-                                                                               
+                                    {                              
                                         //1 столбец
                                         var field1 = tblRow.ChildNodes.FindFirst(td).ChildNodes.FindFirst(a).InnerText;
                                         //var tblCells = tblRow.InnerText;
 
-                                        //2 столбец
                                         //Берет всю строку целеком
                                         //var field2 = tblRow.Descendants("td").Where(node => node.GetAttributeValue("class", "").Contains("")).ToArray();
+
+                                        //2 столбец
                                         var field2 = tblRow.SelectSingleNode(".//td[2]").InnerText;
                                         
                                         //3 столбец
@@ -70,32 +72,59 @@ namespace ConsoleAppParsing
 
                                         //10 столбец
                                         var field10 = tblRow.SelectSingleNode(".//td[10]").InnerText;
-                                        Console.WriteLine(field1 + " | " +
-                                            field2 + " | " +
-                                            field3 + " | " +
-                                            field4 + " | " +
-                                            field5 + " | " +
-                                            field6 + " | " +
-                                            field7 + " | " +
-                                            field8 + " | " +
-                                            field9 + " | " +
-                                            field10);
-
+                                        //Console.WriteLine(field1 + " | " +
+                                        //    field2 + " | " +
+                                        //    field3 + " | " +
+                                        //    field4 + " | " +
+                                        //    field5 + " | " +
+                                        //    field6 + " | " +
+                                        //    field7 + " | " +
+                                        //    field8 + " | " +
+                                        //    field9 + " | " +
+                                        //    field10);
+                                        NumberFormatInfo numberFormatInfo = new NumberFormatInfo()
+                                        {
+                                            NumberDecimalSeparator = ".",
+                                        };
                                         List<WienerBoerseHtml> elemWiener = new List<WienerBoerseHtml>();
                                         elemWiener.Add(new WienerBoerseHtml
                                         {
                                             Name = field1,
-                                            //ISin = tblCells.ToString(),
-                                            ISin = field2.ToString(),
-
-                                            //Chg = field3,
+                                            Last = double.Parse(field2, numberFormatInfo),
+                                            Chg = field3,
+                                            //Date = field4,
+                                            ISin = field5,
+                                            TurnoverVolume = field6,
+                                            BidVolume = field7,
+                                            AskVolume = field8,
+                                            //Maturity = field9,
                                             Status = field10,
                                         });
+
+                                        //запись в файл
+                                        //WriteToFile wFile = new WriteToFile();
+                                        //wFile.Filing(pathWienerBoerse, elemWiener);
                                         foreach (var e in elemWiener)
                                         {
-                                            Console.WriteLine(e.Name + " | " + e.ISin + " | " + e.Status);
+                                            Console.WriteLine(e.Name + " | "
+                                                + e.Last + " | "
+                                                + e.Chg + " | "
+                                                + e.ISin + " | "
+                                                + e.TurnoverVolume + " | "
+                                                + e.BidVolume + " | "
+                                                + e.AskVolume + " | "
+                                                + e.Status + " | ");
                                         }
 
+
+
+                                        //номера страниц приходят
+                                        //foreach(var page in paginationSait)
+                                        //{
+                                        //    var pagin = page.SelectSingleNode(".//li").InnerHtml;
+
+                                        //    Console.WriteLine(pagin.ToString());
+                                        //}
                                     }
                                 }
                             }

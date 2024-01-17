@@ -25,7 +25,8 @@ namespace ConsoleAppParsing
                 settingsWienerBoerse.tbody,
                 settingsWienerBoerse.tr,
                 settingsWienerBoerse.td,
-                settingsWienerBoerse.a
+                settingsWienerBoerse.a,
+                settingsWienerBoerse.pathWienerBoerse
                 );
 
             Console.ReadKey();
