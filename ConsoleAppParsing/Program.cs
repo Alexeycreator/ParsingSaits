@@ -1,7 +1,6 @@
-﻿using HtmlAgilityPack;
+﻿using ConsoleAppParsing.WienerBoerse;
+using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 
@@ -9,10 +8,59 @@ namespace ConsoleAppParsing
 {
     class Program
     {
-
         static void Main(string[] args)
         {
-            try
+
+            string urlJSE2 = "https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions";
+
+            string urlJSE1 = "/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions";
+
+            GetTablesHtml getTables = new GetTablesHtml();
+
+            GetTablesSettingsWienerBoerse settingsWienerBoerse = new GetTablesSettingsWienerBoerse();
+
+            getTables.GetTables(
+                settingsWienerBoerse.urlWienerBoerse,
+                settingsWienerBoerse.IdContainer,
+                settingsWienerBoerse.tbody,
+                settingsWienerBoerse.tr,
+                settingsWienerBoerse.td,
+                settingsWienerBoerse.a
+                );
+
+            Console.ReadKey();
+        }
+    }
+}
+
+
+
+
+//foreach (var tCells in tblCells)
+//{
+
+//    var field2 = tCells.InnerText;
+
+//    //foreach(var tblCell in tblCells)
+//    //{
+//    //    var field2 = tblCell.InnerText;
+//    //    List<WienerBoerseHtml> elem1 = new List<WienerBoerseHtml>();
+//    //    elem1.Add(new WienerBoerseHtml
+//    //    {
+//    //        Name = field1,
+//    //        ISin = field2,
+//    //    });
+//    //    foreach(var e2 in elem1)
+//    //    {
+//    //        Console.WriteLine(e2.Name + " | " + e2.ISin + " | ");
+//    //    }
+//    //}
+
+//}
+
+
+/*
+ try
             {
                 JSEWebsiteHtml jSE = new JSEWebsiteHtml();
                 string url1 = jSE.urlJSEWebsite;
@@ -33,7 +81,7 @@ namespace ConsoleAppParsing
                                 var htmlResponse = responseMessage.Content.ReadAsStringAsync().Result;
                                 if (!string.IsNullOrEmpty(htmlResponse))
                                 {
-                                    Console.WriteLine("Успешно!");
+                                    //Console.WriteLine("Успешно!");
                                     //использование библиотеки htmlAgillityPack
                                     HtmlDocument document = new HtmlDocument();
                                     document.LoadHtml(htmlResponse);
@@ -44,92 +92,59 @@ namespace ConsoleAppParsing
                                     //проверка на то, что таблица получена
                                     if (tables != null && tables.Count > 0)
                                     {
-                                        Console.WriteLine("Таблица получена!");
+                                        //Console.WriteLine("Таблица получена!");
 
                                         foreach (var table in tables)
                                         {
                                             var titleTable = document.DocumentNode.SelectNodes(".//div[@class='titlePage']");
 
-                                            //проверка на заголовок
-                                            if (titleTable != null)
+                                            if(titleTable != null)
                                             {
-                                                //для добавления полученных значений в коллекцию
                                                 List<JSEWebsiteHtml> elem = new List<JSEWebsiteHtml>();
-                                                for (int i = 0; i < titleTable.Count; i++)
+                                                for(int i = 0; i < titleTable.Count; i++)
                                                 {
                                                     elem.Add(new JSEWebsiteHtml
                                                     {
                                                         Title = titleTable[i].InnerText.Trim()
                                                     });
                                                 }
-                                                //для вывода названия таблицы
-                                                foreach (JSEWebsiteHtml item in elem)
+                                                foreach(JSEWebsiteHtml item in elem)
                                                 {
-                                                    Console.WriteLine(string.Join(Environment.NewLine, item.Title));
+                                                    Console.WriteLine(item.Title);
                                                 }
+                                                var rowsTables = document.DocumentNode.SelectNodes(".//table[@class='table tradeOptionsTable']");
 
-                                                //для заголовков столбцов таблицы
-                                                var titleTableCells = document.DocumentNode.SelectNodes(".//div[@class='table-responsive']//table");
-
-                                                //проверка, что у столбцов таблицы есть названия
-                                                if (titleTableCells != null)
+                                                if(rowsTables != null)
                                                 {
-                                                    List<JSEWebsiteHtml> elemTitleTableCells = new List<JSEWebsiteHtml>();
-                                                    for(int i = 0; i < titleTableCells.Count; i++)
+                                                    var rowsTablesBody = table.SelectNodes(".//tr");
+                                                    //Console.WriteLine("RowsTables");
+                                                    if(rowsTablesBody != null)
                                                     {
-                                                        elemTitleTableCells.Add(new JSEWebsiteHtml
+                                                        //Console.WriteLine("rowsTablesBody");
+                                                        List<JSEWebsiteHtml> elemRowsBody = new List<JSEWebsiteHtml>();
+                                                        for (int i = 0; i < rowsTablesBody.Count; i++)
                                                         {
-                                                            TitleCellsTable = titleTableCells[i].InnerText.Trim()
-                                                        });
-                                                    }
-
-                                                    foreach(JSEWebsiteHtml itemTitleCells in elemTitleTableCells)
-                                                    {
-                                                        Console.WriteLine(itemTitleCells.TitleCellsTable);
-                                                    }
-
-                                                    var rowsTables = document.DocumentNode.SelectNodes(".//tr");
-                                                    if (rowsTables != null)
-                                                    {
-                                                        Console.WriteLine("Ok. RowsTables.");
-
-                                                        List<JSEWebsiteHtml> elem3 = new List<JSEWebsiteHtml>();
-                                                        for(int i = 0; i < rowsTables.Count; i++)
-                                                        {
-                                                            elem3.Add(new JSEWebsiteHtml
+                                                            elemRowsBody.Add(new JSEWebsiteHtml
                                                             {
-                                                                RowsTables = rowsTables[i].InnerText.Trim()
+                                                                RowsTables = rowsTablesBody[i].InnerText.Trim()
                                                             });
                                                         }
-                                                        
-                                                        foreach(JSEWebsiteHtml item2 in elem3)
+                                                        foreach(JSEWebsiteHtml elemRowsB in elemRowsBody)
                                                         {
-                                                            Console.WriteLine(item2.RowsTables);
-                                                        }
-
-                                                        foreach (var row in rowsTables)
-                                                        {
-                                                            var cellsTables = row.SelectNodes(".//td");
-                                                            if (cellsTables != null)
-                                                            {
-                                                                Console.WriteLine("Ok. CellsRows");
-                                                            }
-                                                            else
-                                                            {
-                                                                Console.WriteLine("no. cellsRows");
-                                                            }
+                                                            Console.WriteLine(elemRowsB.RowsTables.ToString());
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        Console.WriteLine("no. rowsTables");
+                                                        Console.WriteLine("not yes");
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine("У таблицы нет названия столбцов.");
+                                                    Console.WriteLine("Не получилось!");
                                                 }
                                             }
+
                                             else
                                             {
                                                 Console.WriteLine("Не удалось получить заголовок.");
@@ -152,10 +167,8 @@ namespace ConsoleAppParsing
             }
 
             Console.ReadKey();
-        }
+ */
 
-    }
-}
 
 
 
@@ -201,7 +214,86 @@ namespace ConsoleAppParsing
 
 
 
+////проверка на заголовок
+//if (titleTable != null)
+//{
+//    //для добавления полученных значений в коллекцию
+//    List<JSEWebsiteHtml> elem = new List<JSEWebsiteHtml>();
+//    for (int i = 0; i < titleTable.Count; i++)
+//    {
+//        elem.Add(new JSEWebsiteHtml
+//        {
+//            Title = titleTable[i].InnerText.Trim()
+//        });
+//    }
+//    //для вывода названия таблицы
+//    foreach (JSEWebsiteHtml item in elem)
+//    {
+//        Console.WriteLine(string.Join(Environment.NewLine, item.Title));
+//    }
 
+//    //для заголовков столбцов таблицы
+//    var titleTableCells = document.DocumentNode.SelectNodes(".//div[@class='table-responsive']//table");
+
+//    //проверка, что у столбцов таблицы есть названия
+//    if (titleTableCells != null)
+//    {
+//        List<JSEWebsiteHtml> elemTitleTableCells = new List<JSEWebsiteHtml>();
+//        for (int i = 0; i < titleTableCells.Count; i++)
+//        {
+//            elemTitleTableCells.Add(new JSEWebsiteHtml
+//            {
+//                TitleCellsTable = titleTableCells[i].InnerText.Trim()
+//            });
+//        }
+
+//        foreach (JSEWebsiteHtml itemTitleCells in elemTitleTableCells)
+//        {
+//            Console.WriteLine(itemTitleCells.TitleCellsTable);
+//        }
+
+//        var rowsTables = document.DocumentNode.SelectNodes(".//tr");
+//        if (rowsTables != null)
+//        {
+//            Console.WriteLine("Ok. RowsTables.");
+
+//            List<JSEWebsiteHtml> elem3 = new List<JSEWebsiteHtml>();
+//            for (int i = 0; i < rowsTables.Count; i++)
+//            {
+//                elem3.Add(new JSEWebsiteHtml
+//                {
+//                    RowsTables = rowsTables[i].InnerText.Trim()
+//                });
+//            }
+
+//            foreach (JSEWebsiteHtml item2 in elem3)
+//            {
+//                Console.WriteLine(item2.RowsTables);
+//            }
+
+//            foreach (var row in rowsTables)
+//            {
+//                var cellsTables = row.SelectNodes(".//td");
+//                if (cellsTables != null)
+//                {
+//                    Console.WriteLine("Ok. CellsRows");
+//                }
+//                else
+//                {
+//                    Console.WriteLine("no. cellsRows");
+//                }
+//            }
+//        }
+//        else
+//        {
+//            Console.WriteLine("no. rowsTables");
+//        }
+//    }
+//    else
+//    {
+//        Console.WriteLine("У таблицы нет названия столбцов.");
+//    }
+//}
 
 
 

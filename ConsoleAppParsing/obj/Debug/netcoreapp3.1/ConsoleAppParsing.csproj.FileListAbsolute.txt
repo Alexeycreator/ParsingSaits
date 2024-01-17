@@ -29,3 +29,11 @@ C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.dll
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.pdb
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.genruntimeconfig.cache
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.csproj.AssemblyReference.cache
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\System.Net.Http.Json.dll
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\System.Text.Json.dll
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\CsvHelper.dll
