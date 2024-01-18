@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace ConsoleAppParsing
+﻿namespace ConsoleAppParsing
 {
-    public class WienerBoerseHtml
+    public class Bond
     {
         public string Name { get; set; }
         public double Last { get; set; }

@@ -1,0 +1,13 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ConsoleAppParsing.JSE
+{
+    class JSEModel
+    {
+        [JsonProperty(PropertyName = "GetTradeOptionsResult")]
+        public List<JSEModelState> StateTablesJSE { get; set; }
+    }
+}
