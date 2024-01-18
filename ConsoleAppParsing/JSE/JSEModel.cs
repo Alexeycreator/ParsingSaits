@@ -8,6 +8,6 @@ namespace ConsoleAppParsing.JSE
     class JSEModel
     {
         [JsonProperty(PropertyName = "GetTradeOptionsResult")]
-        public List<JSEModelState> StateTablesJSE { get; set; }
+        public List<Option> StateTablesJSE { get; set; }
     }
 }

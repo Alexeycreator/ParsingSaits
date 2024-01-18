@@ -2,7 +2,7 @@
 
 namespace ConsoleAppParsing
 {
-    public class JSEModelState
+    public class Option
     {
         public string CallPut { get; set; }
         public string FutureExpiry { get; set; }

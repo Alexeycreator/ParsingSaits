@@ -1,12 +1,6 @@
-﻿using ConsoleAppParsing.WienerBoerse;
-using HtmlAgilityPack;
+﻿using ConsoleAppParsing.JSE;
+using ConsoleAppParsing.WienerBoerse;
 using System;
-using System.Net;
-using System.Net.Http;
-using Newtonsoft;
-using Newtonsoft.Json;
-using ConsoleAppParsing.JSE;
-using System.Collections.Generic;
 
 namespace ConsoleAppParsing
 {
@@ -16,28 +10,11 @@ namespace ConsoleAppParsing
         {
             JSEParser _parserJSE = new JSEParser();
             _parserJSE.Parser();
+            //SettingsWienerBoerse settingsWienerBoerse = new SettingsWienerBoerse();
+            //WienerBoerseParser wienerBoerseParser = new WienerBoerseParser(settingsWienerBoerse.urlWienerBoerse);
+            //wienerBoerseParser.GetBonds();
 
             Console.ReadKey();
         }
     }
 }
-
-
-
-
-
-//GetTablesSettingsWienerBoerse settingsWienerBoerse = new GetTablesSettingsWienerBoerse();
-//var wienerBoerseParser = new WienerBoerseParser(settingsWienerBoerse.urlWienerBoerse);
-//var bonds = wienerBoerseParser.GetBonds();
-
-
-//WienerBoerseParser getTables = new WienerBoerseParser();
-//getTables.GetTables(
-//    settingsWienerBoerse.urlWienerBoerse,
-//    settingsWienerBoerse.IdContainer,
-//    settingsWienerBoerse.tbody,
-//    settingsWienerBoerse.tr,
-//    settingsWienerBoerse.td,
-//    settingsWienerBoerse.a,
-//    settingsWienerBoerse.pathWienerBoerse
-//    );

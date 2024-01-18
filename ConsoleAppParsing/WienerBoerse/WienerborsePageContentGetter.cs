@@ -9,7 +9,6 @@ namespace ConsoleAppParsing.WienerBoerse
         public int NumberPage { get; set; }
         private void Next()
         {
-            GetTablesSettingsWienerBoerse settingsWienerBoerse = new GetTablesSettingsWienerBoerse();
             
         }
     }
