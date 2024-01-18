@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kTkP60AiEMYfd2rcZ+5yjIaZNVrBn4oaqY0tsxe0djow5sUVrdz3WZs6cxtorSi4tr/B955IGb7Bgb7yzVHekQ==",
+  "dgSpecHash": "bQlqMPAhr6Htd8sAVfc9h7eB+zIhE67O1qnak/lw7QvIwrFi/njMfiIKDdjTivVBsE8ZCQmMfqcDOQ7ilIdt7A==",
   "success": true,
   "projectFilePath": "C:\\Users\\Алексей\\Desktop\\Учеба\\github\\ParsingSaits\\ConsoleAppParsing\\ConsoleAppParsing.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,8 @@
     "C:\\Users\\Алексей\\.nuget\\packages\\htmlagilitypack\\1.11.57\\htmlagilitypack.1.11.57.nupkg.sha512",
     "C:\\Users\\Алексей\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\Алексей\\.nuget\\packages\\microsoft.csharp\\4.3.0\\microsoft.csharp.4.3.0.nupkg.sha512",
+    "C:\\Users\\Алексей\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Алексей\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\Алексей\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Алексей\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Алексей\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",

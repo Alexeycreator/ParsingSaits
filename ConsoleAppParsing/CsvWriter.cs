@@ -10,10 +10,10 @@ namespace ConsoleAppParsing
         public void Write(string pathFileCSV, List<Bond> bonds)
         {
             StringBuilder csvBuilder = new StringBuilder();
-            csvBuilder.AppendLine("cells1;cells2;");
+            csvBuilder.AppendLine("Name;Last;Chg.% 1D Chg.Abs.;DateTime;ISIN;Turnover Volume;Bid Volume;Ask Volume;Maturity;Status");
             foreach(var bond in bonds)
             {
-                csvBuilder.AppendLine($"{bond.Name}");
+                csvBuilder.AppendLine($"{bond.Name};{bond.Last};{bond.Chg};{bond.Date};{bond.ISin};{bond.TurnoverVolume};{bond.AskVolume};{bond.Maturity};{bond.Status}");
             }
             File.WriteAllText(pathFileCSV, csvBuilder.ToString());
         }

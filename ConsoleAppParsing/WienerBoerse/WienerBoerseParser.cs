@@ -5,6 +5,7 @@ using System.Net;
 using HtmlAgilityPack;
 using System.Linq;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 
 namespace ConsoleAppParsing
 {
@@ -14,14 +15,14 @@ namespace ConsoleAppParsing
         private readonly object _logger;
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
-        public WienerBoerseParser(string url /*object logger*/)
+        private readonly string pathFileCSV = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
+        public WienerBoerseParser(string url)
         {
             _wienerBoerseUrl = url;
             //_logger = logger;
         }
         public List<Bond> GetBonds()
         {
-            GetPageContent();
             return new List<Bond>();
         }
         private string GetPageContent()
@@ -74,6 +75,10 @@ namespace ConsoleAppParsing
                 }
             }
             return null;
+        }
+        public void GetState()
+        {
+            GetPageContent();
         }
     }
 }
