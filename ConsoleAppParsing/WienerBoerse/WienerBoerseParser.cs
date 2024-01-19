@@ -12,10 +12,10 @@ namespace ConsoleAppParsing
     class WienerBoerseParser
     {
         private readonly string _wienerBoerseUrl;
-        private readonly object _logger;
+        private readonly ILogger _logger;
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
-        private readonly string pathFileCSV = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
+        private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
         public WienerBoerseParser(string url)
         {
             _wienerBoerseUrl = url;

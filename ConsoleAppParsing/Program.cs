@@ -1,5 +1,6 @@
 ﻿using ConsoleAppParsing.JSE;
 using ConsoleAppParsing.WienerBoerse;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ConsoleAppParsing
@@ -13,8 +14,8 @@ namespace ConsoleAppParsing
             SettingsWienerBoerse settingsWienerBoerse = new SettingsWienerBoerse();
             WienerBoerseParser wienerBoerseParser = new WienerBoerseParser(settingsWienerBoerse.urlWienerBoerse);
             wienerBoerseParser.GetState();
-
             Console.ReadKey();
         }
     }
+
 }

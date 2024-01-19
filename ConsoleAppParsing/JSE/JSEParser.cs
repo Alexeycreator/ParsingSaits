@@ -7,7 +7,7 @@ namespace ConsoleAppParsing.JSE
     class JSEParser
     {
         private readonly string _urlJSE = "https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions";
-        private readonly string pathFileCSV = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv";
+        private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv";
         public void Parser()
         {
             HttpClient httpClient = new HttpClient();
@@ -20,7 +20,7 @@ namespace ConsoleAppParsing.JSE
                 if (result != null)
                 {
                     CsvWriter csvWriter = new CsvWriter();
-                    csvWriter.Write(pathFileCSV, result.StateTablesJSE);
+                    csvWriter.Write(CSVFilePath, result.StateTablesJSE);
                     Console.WriteLine("Данные с сайта JSE успешно загружены.");
                 }
                 else
