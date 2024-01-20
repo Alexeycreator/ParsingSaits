@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 
@@ -8,6 +9,11 @@ namespace ConsoleAppParsing.JSE
     {
         private readonly string _urlJSE = "https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions";
         private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv";
+        private readonly ILogger _logger;
+        public JSEParser(ILogger<JSEParser> logger)
+        {
+            _logger = logger;
+        }
         public void Parser()
         {
             HttpClient httpClient = new HttpClient();
@@ -21,7 +27,7 @@ namespace ConsoleAppParsing.JSE
                 {
                     CsvWriter csvWriter = new CsvWriter();
                     csvWriter.Write(CSVFilePath, result.StateTablesJSE);
-                    Console.WriteLine("Данные с сайта JSE успешно загружены.");
+                    _logger.LogInformation($"{_urlJSE}\n{result.StateTablesJSE}");
                 }
                 else
                 {

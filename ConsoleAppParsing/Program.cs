@@ -9,10 +9,13 @@ namespace ConsoleAppParsing
     {
         static void Main(string[] args)
         {
-            JSEParser _parserJSE = new JSEParser();
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole().AddDebug().SetMinimumLevel(LogLevel.Debug));
+            var loggerOprions = loggerFactory.CreateLogger<JSEParser>();
+            var loggerBonds = loggerFactory.CreateLogger<WienerBoerseParser>();
+            JSEParser _parserJSE = new JSEParser(loggerOprions);
             _parserJSE.Parser();
             SettingsWienerBoerse settingsWienerBoerse = new SettingsWienerBoerse();
-            WienerBoerseParser wienerBoerseParser = new WienerBoerseParser(settingsWienerBoerse.urlWienerBoerse);
+            WienerBoerseParser wienerBoerseParser = new WienerBoerseParser(settingsWienerBoerse.urlWienerBoerse, loggerBonds);
             wienerBoerseParser.GetState();
             Console.ReadKey();
         }
