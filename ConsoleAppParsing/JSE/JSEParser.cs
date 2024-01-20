@@ -21,18 +21,34 @@ namespace ConsoleAppParsing.JSE
             var _resultJSE = httpClient.SendAsync(requestMessage).Result;
             if (_resultJSE.IsSuccessStatusCode)
             {
+                _logger.LogInformation($"Удалось подключиться по адресу: {_urlJSE}");
                 var resp = _resultJSE.Content.ReadAsStringAsync().Result;
                 var result = JsonConvert.DeserializeObject<JSEModel>(resp);
                 if (result != null)
                 {
+                    _logger.LogInformation("Данные получены.");
                     CsvWriter csvWriter = new CsvWriter();
                     csvWriter.Write(CSVFilePath, result.StateTablesJSE);
-                    _logger.LogInformation($"{_urlJSE}\n{result.StateTablesJSE}");
+                    bool flag = true;
+                    if(flag == true)
+                    {
+                        _logger.LogInformation($"Данные записаны в файл, по указанному пути: {CSVFilePath}");
+                    }
+                    else
+                    {
+                        _logger.LogError("Ошибка");
+                        _logger.LogInformation($"Данные не удалось записать в указанный путь: {CSVFilePath}, проверьте путь.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Данные с сайта JSE не удалось загрузить.");
+                    _logger.LogError("Ошибка");
+                    _logger.LogInformation($"Данные с сайта {_urlJSE} не удалось загрузить.");
                 }
+            }
+            else
+            {
+                _logger.LogError("Ошибка");
             }
         }
     }
