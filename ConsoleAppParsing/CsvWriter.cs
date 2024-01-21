@@ -13,7 +13,7 @@ namespace ConsoleAppParsing
             csvBuilder.AppendLine("Name;Last;Chg.% 1D Chg.Abs.;DateTime;ISIN;Turnover Volume;Bid Volume;Ask Volume;Maturity;Status");
             foreach(var bond in bonds)
             {
-                csvBuilder.AppendLine($"{bond.Name};{bond.Last};{bond.Chg};{bond.Date};{bond.ISin};{bond.TurnoverVolume};{bond.AskVolume};{bond.Maturity};{bond.Status}");
+                csvBuilder.AppendLine($"{bond.Name};{bond.Last};{bond.Chg};{bond.Date};{bond.ISin};{bond.TurnoverVolume};{bond.BidVolume};{bond.AskVolume};{bond.Maturity};{bond.Status}");
             }
             File.WriteAllText(CSVFilePath, csvBuilder.ToString());
         }

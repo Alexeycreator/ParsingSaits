@@ -16,7 +16,7 @@ namespace ConsoleAppParsing
             _parserJSE.Parser();
             SettingsWienerBoerse settingsWienerBoerse = new SettingsWienerBoerse();
             WienerBoerseParser wienerBoerseParser = new WienerBoerseParser(settingsWienerBoerse.urlWienerBoerse, loggerBonds);
-            wienerBoerseParser.GetState();
+            wienerBoerseParser.GetBonds();
             Console.ReadKey();
         }
     }

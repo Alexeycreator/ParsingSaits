@@ -23,10 +23,12 @@ namespace ConsoleAppParsing
         }
         public List<Bond> GetBonds()
         {
+            GetPageContent();
             return new List<Bond>();
         }
         private string GetPageContent()
         {
+            _logger.LogInformation("Подключение к сайту WienerBoerse");
             var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
             _logger.LogInformation($"Подключение к серверу по адресу: {_wienerBoerseUrl}");
             if (_httpResponseMessage.IsSuccessStatusCode)
@@ -43,7 +45,7 @@ namespace ConsoleAppParsing
                     {
                         _logger.LogInformation("Контент страницы получен");
                         var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
-                        var paginationWienerBoerse = document.DocumentNode.SelectNodes(".//div[@class='panel-footer']");
+                        var paginationWienerBoerse = document.DocumentNode.SelectNodes(".//div[@class='pull-right']");
                         _logger.LogInformation("Подключение к таблице прошло успешно");
                         foreach (var tableRow in tableBody)
                         {
@@ -77,6 +79,10 @@ namespace ConsoleAppParsing
                                 Status = _cellStatus
                             });
                             _logger.LogInformation("Данные получены.");
+                            _logger.LogInformation($"Запись данных {bonds.Count} в файл по пути: {CSVFilePath}");
+                            CsvWriter csvWriter = new CsvWriter();
+                            csvWriter.Write(CSVFilePath, bonds);
+                            _logger.LogInformation("Данные записаны успешно");
                         }
                     }
                     else
@@ -92,10 +98,6 @@ namespace ConsoleAppParsing
                 _logger.LogInformation($"Подключиться не удалось {_httpResponseMessage.StatusCode}");
             }
             return null;
-        }
-        public void GetState()
-        {
-            GetPageContent();
         }
     }
 }

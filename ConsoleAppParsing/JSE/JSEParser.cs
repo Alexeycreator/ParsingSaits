@@ -19,6 +19,7 @@ namespace ConsoleAppParsing.JSE
             HttpClient httpClient = new HttpClient();
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, _urlJSE);
             var _resultJSE = httpClient.SendAsync(requestMessage).Result;
+            _logger.LogInformation("Подключение к сайту JSE");
             if (_resultJSE.IsSuccessStatusCode)
             {
                 _logger.LogInformation($"Удалось подключиться по адресу: {_urlJSE}");
