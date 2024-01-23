@@ -16,10 +16,12 @@ namespace ConsoleAppParsing
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
         private readonly ILogger _logger;
         private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
-        public WienerBoerseParser(string url, ILogger<WienerBoerseParser> logger)
+        private CsvWriter _csvWriter;
+        public WienerBoerseParser(string url, ILogger<WienerBoerseParser> logger, CsvWriter csvWriter)
         {
             _wienerBoerseUrl = url;
             _logger = logger;
+            _csvWriter = csvWriter;
         }
         public List<Bond> GetBonds()
         {
@@ -28,25 +30,20 @@ namespace ConsoleAppParsing
         }
         private string GetPageContent()
         {
-            _logger.LogInformation("Подключение к сайту WienerBoerse");
             var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
-            _logger.LogInformation($"Подключение к серверу по адресу: {_wienerBoerseUrl}");
             if (_httpResponseMessage.IsSuccessStatusCode)
             {
-                _logger.LogInformation($"Успешное подключение, StatusCode: {_httpResponseMessage.StatusCode}");
                 var _htmlResponse = _httpResponseMessage.Content.ReadAsStringAsync().Result;
                 if (!string.IsNullOrEmpty(_htmlResponse))
                 {
                     HtmlDocument document = new HtmlDocument();
                     document.LoadHtml(_htmlResponse);
-                    _logger.LogInformation("Страница загружена");
                     var container = document.GetElementbyId("c7928-module-container");
                     if (container != null)
                     {
-                        _logger.LogInformation("Контент страницы получен");
                         var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
                         var paginationWienerBoerse = document.DocumentNode.SelectNodes(".//div[@class='pull-right']");
-                        _logger.LogInformation("Подключение к таблице прошло успешно");
+                        List<Bond> bonds = new List<Bond>();
                         foreach (var tableRow in tableBody)
                         {
                             var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
@@ -59,16 +56,10 @@ namespace ConsoleAppParsing
                             var _cellAskVolume = tableRow.SelectSingleNode(".//td[8]").InnerText;
                             var _cellMaturity = tableRow.SelectSingleNode(".//td[9]").InnerText;
                             var _cellStatus = tableRow.SelectSingleNode(".//td[10]").InnerText;
-                            _logger.LogInformation("Данные всех столбцов получены");
-                            NumberFormatInfo numberFormatInfo = new NumberFormatInfo()
-                            {
-                                NumberDecimalSeparator = ".",
-                            };
-                            List<Bond> bonds = new List<Bond>();
                             bonds.Add(new Bond
                             {
                                 Name = _cellName,
-                                Last = double.Parse(_cellLast, numberFormatInfo),
+                                Last = _cellLast,
                                 Chg = _cellChg,
                                 Date = _cellDate,
                                 ISin = _cellISin,
@@ -78,24 +69,10 @@ namespace ConsoleAppParsing
                                 Maturity = _cellMaturity,
                                 Status = _cellStatus
                             });
-                            _logger.LogInformation("Данные получены.");
-                            _logger.LogInformation($"Запись данных {bonds.Count} в файл по пути: {CSVFilePath}");
-                            CsvWriter csvWriter = new CsvWriter();
-                            csvWriter.Write(CSVFilePath, bonds);
-                            _logger.LogInformation("Данные записаны успешно");
                         }
-                    }
-                    else
-                    {
-                        _logger.LogError("Ошибка");
-                        _logger.LogInformation("Получить контент страницы не получилось");
+                        _csvWriter.Write(CSVFilePath, bonds);
                     }
                 }
-            }
-            else
-            {
-                _logger.LogError("Ошибка");
-                _logger.LogInformation($"Подключиться не удалось {_httpResponseMessage.StatusCode}");
             }
             return null;
         }

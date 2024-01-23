@@ -3,7 +3,7 @@
     public class Bond
     {
         public string Name { get; set; }
-        public double Last { get; set; }
+        public string Last { get; set; }
         public string Chg { get; set; }
         public string Date { get; set; }
         public string ISin { get; set; }
