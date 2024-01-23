@@ -11,3 +11,27 @@
 2024-01-23 15:09:36.1737 INFO Данные со страницы извлечены. Количество: 50
 2024-01-23 15:09:36.1737 INFO Идет запись в файл по пути: C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv
 2024-01-23 15:09:36.1737 INFO Данные записаны в файл. Количество 50 из 50
+2024-01-23 18:15:39.2760 INFO Подключение к сайту: https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions
+2024-01-23 18:15:40.6413 INFO Подключение удалось: OK
+2024-01-23 18:15:40.6462 INFO Извлечение данных
+2024-01-23 18:15:41.0546 INFO Данные извлечены. Количество 23
+2024-01-23 18:15:41.0546 INFO Запись в файл по пути C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv
+2024-01-23 18:15:41.0546 INFO Данные записаны 23 из 23
+2024-01-23 18:17:57.1195 INFO Подключение к сайту: https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions
+2024-01-23 18:17:58.0819 INFO Подключение удалось: OK
+2024-01-23 18:17:58.0819 INFO Извлечение данных
+2024-01-23 18:17:58.3416 INFO Данные извлечены. Количество 23
+2024-01-23 18:17:58.3416 INFO Запись в файл по пути C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv
+2024-01-23 18:17:58.3416 INFO Данные записаны 23 из 23
+2024-01-23 18:23:59.8029 INFO Подключение к сайту: https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions
+2024-01-23 18:24:01.0482 INFO Подключение удалось: OK
+2024-01-23 18:24:01.0508 INFO Извлечение данных
+2024-01-23 18:24:01.3154 INFO Данные извлечены. Количество 23
+2024-01-23 18:24:01.3154 INFO Запись в файл по пути C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv
+2024-01-23 18:24:01.3188 INFO Данные записаны 23 из 23
+2024-01-23 18:28:42.4904 INFO Подключение к сайту: https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions
+2024-01-23 18:28:43.5827 INFO Подключение удалось: OK
+2024-01-23 18:28:43.5827 INFO Извлечение данных
+2024-01-23 18:28:43.8721 INFO Данные извлечены. Количество 23
+2024-01-23 18:28:43.8721 INFO Запись в файл по пути C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv
+2024-01-23 18:28:43.8721 INFO Данные записаны 23 из 23

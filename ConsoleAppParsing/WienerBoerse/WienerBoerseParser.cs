@@ -12,27 +12,25 @@ namespace ConsoleAppParsing
         private readonly string _wienerBoerseUrl;
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
-        private readonly Logger _logger;
+        private static Logger bondsLogger = LogManager.GetCurrentClassLogger();
         private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
-        private CsvWriter _csvWriter;
-        public WienerBoerseParser(string url, Logger logger, CsvWriter csvWriter)
+        private CsvWriter _csvWriter = new CsvWriter();
+        public WienerBoerseParser(string url)
         {
             _wienerBoerseUrl = url;
-            _logger = logger;
-            _csvWriter = csvWriter;
         }
         public List<Bond> GetBonds()
         {
-            GetPageContent();
             return new List<Bond>();
+            GetPageContent();
         }
         private string GetPageContent()
         {
-            _logger.Info($"Подключение к сайту по адресу: {_wienerBoerseUrl}");
+            bondsLogger.Info($"Подключение к сайту по адресу: {_wienerBoerseUrl}");
             var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
             if (_httpResponseMessage.IsSuccessStatusCode)
             {
-                _logger.Info($"Подключение прошло успешно. {_httpResponseMessage.StatusCode}");
+                bondsLogger.Info($"Подключение прошло успешно. {_httpResponseMessage.StatusCode}");
                 var _htmlResponse = _httpResponseMessage.Content.ReadAsStringAsync().Result;
                 if (!string.IsNullOrEmpty(_htmlResponse))
                 {
@@ -41,11 +39,11 @@ namespace ConsoleAppParsing
                     var container = document.GetElementbyId("c7928-module-container");
                     if (container != null)
                     {
-                        _logger.Info("Контент страницы получен");
+                        bondsLogger.Info("Контент страницы получен");
                         var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
                         var paginationWienerBoerse = document.DocumentNode.SelectNodes(".//div[@class='pull-right']");
                         List<Bond> bonds = new List<Bond>();
-                        _logger.Info("Извлечение данных.");
+                        bondsLogger.Info("Извлечение данных.");
                         foreach (var tableRow in tableBody)
                         {
                             var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
@@ -74,21 +72,21 @@ namespace ConsoleAppParsing
                         }
                         if (bonds != null)
                         {
-                            _logger.Info($"Данные со страницы извлечены. Количество: {bonds.Count}");
-                            _logger.Info($"Идет запись в файл по пути: {CSVFilePath}");
+                            bondsLogger.Info($"Данные со страницы извлечены. Количество: {bonds.Count}");
+                            bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");
                             _csvWriter.Write(CSVFilePath, bonds);
-                            _logger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
+                            bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
                         }
-                        else 
+                        else
                         {
-                            _logger.Error("Данные не удалось извлечь и записать в файл");
+                            bondsLogger.Error("Данные не удалось извлечь и записать в файл");
                         }
                     }
                 }
             }
-            else 
+            else
             {
-                _logger.Error($"Подключиться не удалось. {_httpResponseMessage.StatusCode}");
+                bondsLogger.Error($"Подключиться не удалось. {_httpResponseMessage.StatusCode}");
             }
             return null;
         }
