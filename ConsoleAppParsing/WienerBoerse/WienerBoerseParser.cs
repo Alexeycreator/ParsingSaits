@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Net;
 using HtmlAgilityPack;
 using System.Linq;
-using System.Globalization;
-using Microsoft.Extensions.Logging;
+using System;
+using NLog;
 
 namespace ConsoleAppParsing
 {
@@ -14,10 +12,10 @@ namespace ConsoleAppParsing
         private readonly string _wienerBoerseUrl;
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
-        private readonly ILogger _logger;
+        private readonly Logger _logger;
         private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
         private CsvWriter _csvWriter;
-        public WienerBoerseParser(string url, ILogger<WienerBoerseParser> logger, CsvWriter csvWriter)
+        public WienerBoerseParser(string url, Logger logger, CsvWriter csvWriter)
         {
             _wienerBoerseUrl = url;
             _logger = logger;
@@ -30,9 +28,11 @@ namespace ConsoleAppParsing
         }
         private string GetPageContent()
         {
+            _logger.Info($"Подключение к сайту по адресу: {_wienerBoerseUrl}");
             var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
             if (_httpResponseMessage.IsSuccessStatusCode)
             {
+                _logger.Info($"Подключение прошло успешно. {_httpResponseMessage.StatusCode}");
                 var _htmlResponse = _httpResponseMessage.Content.ReadAsStringAsync().Result;
                 if (!string.IsNullOrEmpty(_htmlResponse))
                 {
@@ -41,9 +41,11 @@ namespace ConsoleAppParsing
                     var container = document.GetElementbyId("c7928-module-container");
                     if (container != null)
                     {
+                        _logger.Info("Контент страницы получен");
                         var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
                         var paginationWienerBoerse = document.DocumentNode.SelectNodes(".//div[@class='pull-right']");
                         List<Bond> bonds = new List<Bond>();
+                        _logger.Info("Извлечение данных.");
                         foreach (var tableRow in tableBody)
                         {
                             var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
@@ -70,9 +72,23 @@ namespace ConsoleAppParsing
                                 Status = _cellStatus
                             });
                         }
-                        _csvWriter.Write(CSVFilePath, bonds);
+                        if (bonds != null)
+                        {
+                            _logger.Info($"Данные со страницы извлечены. Количество: {bonds.Count}");
+                            _logger.Info($"Идет запись в файл по пути: {CSVFilePath}");
+                            _csvWriter.Write(CSVFilePath, bonds);
+                            _logger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
+                        }
+                        else 
+                        {
+                            _logger.Error("Данные не удалось извлечь и записать в файл");
+                        }
                     }
                 }
+            }
+            else 
+            {
+                _logger.Error($"Подключиться не удалось. {_httpResponseMessage.StatusCode}");
             }
             return null;
         }
