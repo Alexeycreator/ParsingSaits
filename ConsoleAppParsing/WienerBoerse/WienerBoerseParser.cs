@@ -9,85 +9,83 @@ namespace ConsoleAppParsing
 {
     class WienerBoerseParser
     {
-        private readonly string _wienerBoerseUrl;
+        private string _wienerBoerseUrl;
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
         private static Logger bondsLogger = LogManager.GetCurrentClassLogger();
+        private int numberPage = 1;
         private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
         private CsvWriter _csvWriter = new CsvWriter();
-        public WienerBoerseParser(string url)
+        public string GetPageContent()
         {
-            _wienerBoerseUrl = url;
-        }
-        public List<Bond> GetBonds()
-        {
-            return new List<Bond>();
-            GetPageContent();
-        }
-        private string GetPageContent()
-        {
-            bondsLogger.Info($"Подключение к сайту по адресу: {_wienerBoerseUrl}");
-            var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
-            if (_httpResponseMessage.IsSuccessStatusCode)
+            do
             {
-                bondsLogger.Info($"Подключение прошло успешно. {_httpResponseMessage.StatusCode}");
-                var _htmlResponse = _httpResponseMessage.Content.ReadAsStringAsync().Result;
-                if (!string.IsNullOrEmpty(_htmlResponse))
+                string urlWienerBoerse = $"https://www.wienerborse.at/en/bonds/?c7928-page={numberPage}&per-page=50&c";
+                _wienerBoerseUrl = urlWienerBoerse;
+                bondsLogger.Info($"Подключение к сайту по адресу: {_wienerBoerseUrl}");
+                var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
+                if (_httpResponseMessage.IsSuccessStatusCode)
                 {
-                    HtmlDocument document = new HtmlDocument();
-                    document.LoadHtml(_htmlResponse);
-                    var container = document.GetElementbyId("c7928-module-container");
-                    if (container != null)
+                    bondsLogger.Info($"Подключение прошло успешно. {_httpResponseMessage.StatusCode}");
+                    var _htmlResponse = _httpResponseMessage.Content.ReadAsStringAsync().Result;
+                    if (!string.IsNullOrEmpty(_htmlResponse))
                     {
-                        bondsLogger.Info("Контент страницы получен");
-                        var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
-                        var paginationWienerBoerse = document.DocumentNode.SelectNodes(".//div[@class='pull-right']");
-                        List<Bond> bonds = new List<Bond>();
-                        bondsLogger.Info("Извлечение данных.");
-                        foreach (var tableRow in tableBody)
+                        HtmlDocument document = new HtmlDocument();
+                        document.LoadHtml(_htmlResponse);
+                        var container = document.GetElementbyId("c7928-module-container");
+                        if (container != null)
                         {
-                            var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
-                            var _cellLast = tableRow.SelectSingleNode(".//td[2]").InnerText;
-                            var _cellChg = tableRow.SelectSingleNode(".//td[3]").InnerText;
-                            var _cellDate = tableRow.SelectSingleNode(".//td[4]").InnerText;
-                            var _cellISin = tableRow.SelectSingleNode(".//td[5]").InnerText;
-                            var _cellTurnoverVolume = tableRow.SelectSingleNode(".//td[6]").InnerText;
-                            var _cellBidVolume = tableRow.SelectSingleNode(".//td[7]").InnerText;
-                            var _cellAskVolume = tableRow.SelectSingleNode(".//td[8]").InnerText;
-                            var _cellMaturity = tableRow.SelectSingleNode(".//td[9]").InnerText;
-                            var _cellStatus = tableRow.SelectSingleNode(".//td[10]").InnerText;
-                            bonds.Add(new Bond
+                            bondsLogger.Info($"Контент страницы №{numberPage} получен.");
+                            var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
+                            List<Bond> bonds = new List<Bond>();
+                            bondsLogger.Info("Извлечение данных.");
+                            foreach (var tableRow in tableBody)
                             {
-                                Name = _cellName,
-                                Last = _cellLast,
-                                Chg = _cellChg,
-                                Date = _cellDate,
-                                ISin = _cellISin,
-                                TurnoverVolume = _cellTurnoverVolume,
-                                BidVolume = _cellBidVolume,
-                                AskVolume = _cellAskVolume,
-                                Maturity = _cellMaturity,
-                                Status = _cellStatus
-                            });
-                        }
-                        if (bonds != null)
-                        {
-                            bondsLogger.Info($"Данные со страницы извлечены. Количество: {bonds.Count}");
-                            bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");
-                            _csvWriter.Write(CSVFilePath, bonds);
-                            bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
-                        }
-                        else
-                        {
-                            bondsLogger.Error("Данные не удалось извлечь и записать в файл");
+                                var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
+                                var _cellLast = tableRow.SelectSingleNode(".//td[2]").InnerText;
+                                var _cellChg = tableRow.SelectSingleNode(".//td[3]").InnerText;
+                                var _cellDate = tableRow.SelectSingleNode(".//td[4]").InnerText;
+                                var _cellISin = tableRow.SelectSingleNode(".//td[5]").InnerText;
+                                var _cellTurnoverVolume = tableRow.SelectSingleNode(".//td[6]").InnerText;
+                                var _cellBidVolume = tableRow.SelectSingleNode(".//td[7]").InnerText;
+                                var _cellAskVolume = tableRow.SelectSingleNode(".//td[8]").InnerText;
+                                var _cellMaturity = tableRow.SelectSingleNode(".//td[9]").InnerText;
+                                var _cellStatus = tableRow.SelectSingleNode(".//td[10]").InnerText;
+                                bonds.Add(new Bond
+                                {
+                                    Name = _cellName,
+                                    Last = _cellLast,
+                                    Chg = _cellChg,
+                                    Date = _cellDate,
+                                    ISin = _cellISin,
+                                    TurnoverVolume = _cellTurnoverVolume,
+                                    BidVolume = _cellBidVolume,
+                                    AskVolume = _cellAskVolume,
+                                    Maturity = _cellMaturity,
+                                    Status = _cellStatus
+                                });
+                            }
+                            if (bonds != null)
+                            {
+                                bondsLogger.Info($"Данные со страницы извлечены. Количество: {bonds.Count}");
+                                bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");
+                                _csvWriter.Write(CSVFilePath, bonds);
+                                bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
+                            }
+                            else
+                            {
+                                bondsLogger.Error($"Данные со страницы №{numberPage} не удалось извлечь и записать в файл");
+                            }
                         }
                     }
                 }
+                else
+                {
+                    bondsLogger.Error($"Подключиться не удалось. {_httpResponseMessage.StatusCode}");
+                }
+                numberPage++;
             }
-            else
-            {
-                bondsLogger.Error($"Подключиться не удалось. {_httpResponseMessage.StatusCode}");
-            }
+            while (numberPage != 341);
             return null;
         }
     }
