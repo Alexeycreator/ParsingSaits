@@ -18,11 +18,12 @@ namespace ConsoleAppParsing
         private CsvWriter _csvWriter = new CsvWriter();
         public string GetPageContent()
         {
+            List<Bond> bonds = new List<Bond>();
             do
             {
                 string urlWienerBoerse = $"https://www.wienerborse.at/en/bonds/?c7928-page={numberPage}&per-page=50&c";
                 _wienerBoerseUrl = urlWienerBoerse;
-                bondsLogger.Info($"Подключение к сайту по адресу: {_wienerBoerseUrl}");
+                bondsLogger.Info($"Подключение к странице сайта по адресу: {_wienerBoerseUrl}");
                 var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
                 if (_httpResponseMessage.IsSuccessStatusCode)
                 {
@@ -37,7 +38,6 @@ namespace ConsoleAppParsing
                         {
                             bondsLogger.Info($"Контент страницы №{numberPage} получен.");
                             var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
-                            List<Bond> bonds = new List<Bond>();
                             bondsLogger.Info("Извлечение данных.");
                             foreach (var tableRow in tableBody)
                             {
@@ -67,10 +67,9 @@ namespace ConsoleAppParsing
                             }
                             if (bonds != null)
                             {
-                                bondsLogger.Info($"Данные со страницы извлечены. Количество: {bonds.Count}");
-                                bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");
-                                _csvWriter.Write(CSVFilePath, bonds);
-                                bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
+                                bondsLogger.Info($"Данные со страницы №{numberPage} извлечены. Количество: {bonds.Count}");
+                                //_csvWriter.Write(CSVFilePath, bonds);
+                                //bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
                             }
                             else
                             {
@@ -85,7 +84,10 @@ namespace ConsoleAppParsing
                 }
                 numberPage++;
             }
-            while (numberPage != 341);
+            while (numberPage <= 341);
+            bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");
+            _csvWriter.Write(CSVFilePath, bonds);
+            bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
             return null;
         }
     }

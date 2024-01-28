@@ -25,7 +25,7 @@ namespace ConsoleAppParsing.JSE
                 var result = JsonConvert.DeserializeObject<JSEModel>(resp);
                 if (result != null)
                 {
-                    if (result.StateTablesJSE.Count != 0)
+                    if (result.StateTablesJSE != null)
                     {
                         optionsLogger.Info($"Данные извлечены. Количество {result.StateTablesJSE.Count}");
                         optionsLogger.Info($"Запись в файл по пути {CSVFilePath}");
@@ -34,7 +34,7 @@ namespace ConsoleAppParsing.JSE
                     }
                     else
                     {
-                        optionsLogger.Error($"Данных на сайте: {result.StateTablesJSE.Count}");
+                        optionsLogger.Error($"Данных на сайте нет");
                     }
                 }
                 else
