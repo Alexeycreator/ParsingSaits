@@ -68,8 +68,6 @@ namespace ConsoleAppParsing
                             if (bonds != null)
                             {
                                 bondsLogger.Info($"Данные со страницы №{numberPage} извлечены. Количество: {bonds.Count}");
-                                //_csvWriter.Write(CSVFilePath, bonds);
-                                //bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
                             }
                             else
                             {
@@ -84,10 +82,17 @@ namespace ConsoleAppParsing
                 }
                 numberPage++;
             }
-            while (numberPage <= 341);
-            bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");
-            _csvWriter.Write(CSVFilePath, bonds);
-            bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
+            while (numberPage <= 10);
+            try
+            {
+                bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");
+                _csvWriter.Write(CSVFilePath, bonds);
+                bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
+            }
+            catch (Exception ex)
+            {
+                bondsLogger.Error($"Ошибка: {ex}");
+            }
             return null;
         }
     }
