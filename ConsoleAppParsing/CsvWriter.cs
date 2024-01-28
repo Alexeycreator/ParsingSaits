@@ -15,8 +15,7 @@ namespace ConsoleAppParsing
             {
                 csvBuilder.AppendLine($"{bond.Name};{bond.Last};{bond.Chg};{bond.Date};{bond.ISin};{bond.TurnoverVolume};{bond.BidVolume};{bond.AskVolume};{bond.Maturity};{bond.Status}");
             }
-            File.AppendAllLines(CSVFilePath, new[] { $"{csvBuilder}" });
-            //File.WriteAllText(CSVFilePath, csvBuilder.ToString());
+            File.WriteAllText(CSVFilePath, csvBuilder.ToString());
         }
         public void Write(string CSVFilePath, List<Option> options)
         {

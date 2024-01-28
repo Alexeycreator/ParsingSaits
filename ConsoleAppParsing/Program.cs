@@ -12,6 +12,7 @@ namespace ConsoleAppParsing
             _parserJSE.Parser();
             WienerBoerseParser wienerBoerseParser = new WienerBoerseParser();
             wienerBoerseParser.GetPageContent();
+            Console.WriteLine("Работа завершена успешно, данные получены.");
             Console.ReadKey();
         }
     }
