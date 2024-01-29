@@ -11,7 +11,7 @@ namespace ConsoleAppParsing.JSE
         private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv";
         private static Logger optionsLogger = LogManager.GetCurrentClassLogger();
         private CsvWriter _csvWriter = new CsvWriter();
-        public void Parser()
+        public string GetOptions()
         {
             HttpClient httpClient = new HttpClient();
             optionsLogger.Info($"Подключение к сайту: {_urlJSE}");
@@ -28,9 +28,16 @@ namespace ConsoleAppParsing.JSE
                     if (result.StateTablesJSE != null)
                     {
                         optionsLogger.Info($"Данные извлечены. Количество {result.StateTablesJSE.Count}");
-                        optionsLogger.Info($"Запись в файл по пути {CSVFilePath}");
-                        _csvWriter.Write(CSVFilePath, result.StateTablesJSE);
-                        optionsLogger.Info($"Данные записаны {result.StateTablesJSE.Count} из {result.StateTablesJSE.Count}");
+                        if(result.StateTablesJSE.Count != 0)
+                        {
+                            optionsLogger.Info($"Запись в файл по пути {CSVFilePath}");
+                            _csvWriter.Write(CSVFilePath, result.StateTablesJSE);
+                            optionsLogger.Info($"Данные записаны {result.StateTablesJSE.Count} из {result.StateTablesJSE.Count}");
+                        }
+                        else
+                        {
+                            optionsLogger.Info($"Количество данных на сайте {result.StateTablesJSE.Count}, запись в файл не требуется.");
+                        }
                     }
                     else
                     {
@@ -46,6 +53,7 @@ namespace ConsoleAppParsing.JSE
             {
                 optionsLogger.Error($"Подключение не удалось! {_resultJSE.StatusCode}");
             }
+            return null;
         }
     }
 }

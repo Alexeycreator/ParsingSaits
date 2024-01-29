@@ -16,7 +16,7 @@ namespace ConsoleAppParsing
         private int numberPage = 1;
         private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
         private CsvWriter _csvWriter = new CsvWriter();
-        public string GetPageContent()
+        public string GetBonds()
         {
             List<Bond> bonds = new List<Bond>();
             do
@@ -71,7 +71,7 @@ namespace ConsoleAppParsing
                             }
                             else
                             {
-                                bondsLogger.Error($"Данные со страницы №{numberPage} не удалось извлечь и записать в файл");
+                                bondsLogger.Error($"Данные со страницы №{numberPage} не удалось извлечь");
                             }
                         }
                     }
@@ -82,7 +82,7 @@ namespace ConsoleAppParsing
                 }
                 numberPage++;
             }
-            while (numberPage <= 10);
+            while (numberPage <= 341);
             try
             {
                 bondsLogger.Info($"Идет запись в файл по пути: {CSVFilePath}");

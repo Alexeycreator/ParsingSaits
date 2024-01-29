@@ -1,6 +1,6 @@
 ﻿using ConsoleAppParsing.JSE;
-using NLog;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleAppParsing
 {
@@ -9,9 +9,9 @@ namespace ConsoleAppParsing
         static void Main(string[] args)
         {
             JSEParser _parserJSE = new JSEParser();
-            _parserJSE.Parser();
+            _parserJSE.GetOptions();
             WienerBoerseParser wienerBoerseParser = new WienerBoerseParser();
-            wienerBoerseParser.GetPageContent();
+            wienerBoerseParser.GetBonds();
             Console.WriteLine("Работа завершена успешно, данные получены.");
             Console.ReadKey();
         }
