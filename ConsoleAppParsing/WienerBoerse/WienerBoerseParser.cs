@@ -45,29 +45,36 @@ namespace ConsoleAppParsing
                                     bondsLogger.Info("Извлечение данных.");
                                     foreach (var tableRow in tableBody)
                                     {
-                                        var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
-                                        var _cellLast = tableRow.SelectSingleNode(".//td[2]").InnerText;
-                                        var _cellChg = tableRow.SelectSingleNode(".//td[3]").InnerText;
-                                        var _cellDate = tableRow.SelectSingleNode(".//td[4]").InnerText;
-                                        var _cellISin = tableRow.SelectSingleNode(".//td[5]").InnerText;
-                                        var _cellTurnoverVolume = tableRow.SelectSingleNode(".//td[6]").InnerText;
-                                        var _cellBidVolume = tableRow.SelectSingleNode(".//td[7]").InnerText;
-                                        var _cellAskVolume = tableRow.SelectSingleNode(".//td[8]").InnerText;
-                                        var _cellMaturity = tableRow.SelectSingleNode(".//td[9]").InnerText;
-                                        var _cellStatus = tableRow.SelectSingleNode(".//td[10]").InnerText;
-                                        bonds.Add(new Bond
+                                        try
                                         {
-                                            Name = _cellName,
-                                            Last = _cellLast,
-                                            Chg = _cellChg,
-                                            Date = _cellDate,
-                                            ISin = _cellISin,
-                                            TurnoverVolume = _cellTurnoverVolume,
-                                            BidVolume = _cellBidVolume,
-                                            AskVolume = _cellAskVolume,
-                                            Maturity = _cellMaturity,
-                                            Status = _cellStatus
-                                        });
+                                            var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
+                                            var _cellLast = tableRow.SelectSingleNode(".//td[2]").InnerText;
+                                            var _cellChg = tableRow.SelectSingleNode(".//td[3]").InnerText;
+                                            var _cellDate = tableRow.SelectSingleNode(".//td[4]").InnerText;
+                                            var _cellISin = tableRow.SelectSingleNode(".//td[5]").InnerText;
+                                            var _cellTurnoverVolume = tableRow.SelectSingleNode(".//td[6]").InnerText;
+                                            var _cellBidVolume = tableRow.SelectSingleNode(".//td[7]").InnerText;
+                                            var _cellAskVolume = tableRow.SelectSingleNode(".//td[8]").InnerText;
+                                            var _cellMaturity = tableRow.SelectSingleNode(".//td[9]").InnerText;
+                                            var _cellStatus = tableRow.SelectSingleNode(".//td[10]").InnerText;
+                                            bonds.Add(new Bond
+                                            {
+                                                Name = _cellName,
+                                                Last = _cellLast,
+                                                Chg = _cellChg,
+                                                Date = _cellDate,
+                                                ISin = _cellISin,
+                                                TurnoverVolume = _cellTurnoverVolume,
+                                                BidVolume = _cellBidVolume,
+                                                AskVolume = _cellAskVolume,
+                                                Maturity = _cellMaturity,
+                                                Status = _cellStatus
+                                            });
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            bondsLogger.Error($"Ошибка: {ex}");
+                                        }
                                     }
                                     if (bonds != null)
                                     {
@@ -84,7 +91,7 @@ namespace ConsoleAppParsing
                                 }
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             bondsLogger.Error($"Ошибка: {ex}");
                         }

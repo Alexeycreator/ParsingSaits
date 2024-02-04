@@ -11,18 +11,18 @@ namespace ConsoleAppParsing
     {
         static void Main(string[] args)
         {
-            //ServiseHtmlPage serviseHtmlPage = new ServiseHtmlPage();
+            ServiseHtmlPage serviseHtmlPage = new ServiseHtmlPage();
             WienerBoerseParser wienerBoerseParser = new WienerBoerseParser();
-            //JSEParser _parserJSE = new JSEParser();
-            //_ = serviseHtmlPage.StartingSessionAsync();
-            //_parserJSE.GetOptions();
+            JSEParser _parserJSE = new JSEParser();
+            _ = serviseHtmlPage.StartingSessionAsync();
+            _parserJSE.GetOptions();
             wienerBoerseParser.GetBonds();
             XmlSettings xmlSettings = new XmlSettings();
             xmlSettings.Save("jse");
             xmlSettings.GetXML();
             Console.WriteLine("Работа завершена успешно, данные получены.");
             Console.ReadKey();
-            //serviseHtmlPage.EndingSession();
+            serviseHtmlPage.EndingSession();
         }
     }
 
