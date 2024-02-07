@@ -31,52 +31,46 @@ namespace ConsoleAppParsing
                     var _htmlResponse = _httpResponseMessage.Content.ReadAsStringAsync().Result;
                     if (!string.IsNullOrEmpty(_htmlResponse))
                     {
-                        try
+                        HtmlDocument document = new HtmlDocument();
+                        document.LoadHtml(_htmlResponse);
+                        var container = document.GetElementbyId("c7928-module-container");
+                        if (container != null)
                         {
-                            HtmlDocument document = new HtmlDocument();
-                            document.LoadHtml(_htmlResponse);
-                            var container = document.GetElementbyId("c7928-module-container");
-                            if (container != null)
+                            var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
+                            bondsLogger.Info($"Контент страницы №{numberPage} получен.");
+                            bondsLogger.Info("Извлечение данных.");
+                            var _countCells = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").SelectSingleNode(".//tr").ChildNodes.Count;
+                            try
                             {
-                                try
+                                if (_countCells == 10)
                                 {
-                                    var tableBody = document.GetElementbyId("c7928-module-container").ChildNodes.FindFirst("tbody").ChildNodes.Where(x => x.Name == "tr").ToArray();
-                                    bondsLogger.Info($"Контент страницы №{numberPage} получен.");
-                                    bondsLogger.Info("Извлечение данных.");
                                     foreach (var tableRow in tableBody)
                                     {
-                                        try
+                                        var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
+                                        var _cellLast = tableRow.SelectSingleNode(".//td[2]").InnerText;
+                                        var _cellChg = tableRow.SelectSingleNode(".//td[3]").InnerText;
+                                        var _cellDate = tableRow.SelectSingleNode(".//td[4]").InnerText;
+                                        var _cellISin = tableRow.SelectSingleNode(".//td[5]").InnerText;
+                                        var _cellTurnoverVolume = tableRow.SelectSingleNode(".//td[6]").InnerText;
+                                        var _cellBidVolume = tableRow.SelectSingleNode(".//td[7]").InnerText;
+                                        var _cellAskVolume = tableRow.SelectSingleNode(".//td[8]").InnerText;
+                                        var _cellMaturity = tableRow.SelectSingleNode(".//td[9]").InnerText;
+                                        var _cellStatus = tableRow.SelectSingleNode(".//td[10]").InnerText;
+                                        bonds.Add(new Bond
                                         {
-                                            var _cellName = tableRow.ChildNodes.FindFirst("td").ChildNodes.FindFirst("a").InnerText;
-                                            var _cellLast = tableRow.SelectSingleNode(".//td[2]").InnerText;
-                                            var _cellChg = tableRow.SelectSingleNode(".//td[3]").InnerText;
-                                            var _cellDate = tableRow.SelectSingleNode(".//td[4]").InnerText;
-                                            var _cellISin = tableRow.SelectSingleNode(".//td[5]").InnerText;
-                                            var _cellTurnoverVolume = tableRow.SelectSingleNode(".//td[6]").InnerText;
-                                            var _cellBidVolume = tableRow.SelectSingleNode(".//td[7]").InnerText;
-                                            var _cellAskVolume = tableRow.SelectSingleNode(".//td[8]").InnerText;
-                                            var _cellMaturity = tableRow.SelectSingleNode(".//td[9]").InnerText;
-                                            var _cellStatus = tableRow.SelectSingleNode(".//td[10]").InnerText;
-                                            bonds.Add(new Bond
-                                            {
-                                                Name = _cellName,
-                                                Last = _cellLast,
-                                                Chg = _cellChg,
-                                                Date = _cellDate,
-                                                ISin = _cellISin,
-                                                TurnoverVolume = _cellTurnoverVolume,
-                                                BidVolume = _cellBidVolume,
-                                                AskVolume = _cellAskVolume,
-                                                Maturity = _cellMaturity,
-                                                Status = _cellStatus
-                                            });
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            bondsLogger.Error($"Ошибка: {ex}");
-                                        }
+                                            Name = _cellName,
+                                            Last = _cellLast,
+                                            Chg = _cellChg,
+                                            Date = _cellDate,
+                                            ISin = _cellISin,
+                                            TurnoverVolume = _cellTurnoverVolume,
+                                            BidVolume = _cellBidVolume,
+                                            AskVolume = _cellAskVolume,
+                                            Maturity = _cellMaturity,
+                                            Status = _cellStatus
+                                        });
                                     }
-                                    if (bonds != null)
+                                    if (bonds != null && _countCells == 10)
                                     {
                                         bondsLogger.Info($"Данные со страницы №{numberPage} извлечены. Количество: {bonds.Count}");
                                     }
@@ -85,15 +79,17 @@ namespace ConsoleAppParsing
                                         bondsLogger.Error($"Данные со страницы №{numberPage} не удалось извлечь");
                                     }
                                 }
-                                catch (Exception ex)
+                                else
                                 {
-                                    bondsLogger.Error($"Ошибка: {ex}");
+                                    bondsLogger.Error("Количество столбцов на сайте изменилось. Данные не удается получить.");
                                 }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            bondsLogger.Error($"Ошибка: {ex}");
+                            catch(Exception ex)
+                            {
+                                bondsLogger.Error($"Ошибка: {ex}");
+                            }
+                            
+                            
                         }
                     }
                 }
