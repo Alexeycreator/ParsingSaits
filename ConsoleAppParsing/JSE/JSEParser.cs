@@ -8,7 +8,8 @@ namespace ConsoleAppParsing.JSE
     class JSEParser
     {
         private readonly string _urlJSE = "https://clientportal.jse.co.za/_vti_bin/JSE/DerivativesService.svc/GetTradeOptions";
-        private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Options.csv";
+        private static string dateGetOptions = DateTime.Now.ToShortDateString();
+        private readonly string CSVFilePath = $@"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\parsingOptions\Options_{dateGetOptions}.csv";
         private static Logger optionsLogger = LogManager.GetCurrentClassLogger();
         private CsvWriter _csvWriter = new CsvWriter();
         public string GetOptions()

@@ -14,7 +14,8 @@ namespace ConsoleAppParsing
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
         private static Logger bondsLogger = LogManager.GetCurrentClassLogger();
         private int numberPage = 1;
-        private readonly string CSVFilePath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\Bonds.csv";
+        private static string dateGetBonds = DateTime.Now.ToShortDateString();
+        private readonly string CSVFilePath = $@"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\parsingBonds\Bonds_{dateGetBonds}.csv";
         private CsvWriter _csvWriter = new CsvWriter();
         public string GetBonds()
         {
