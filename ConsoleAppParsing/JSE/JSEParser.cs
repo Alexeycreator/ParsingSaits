@@ -34,6 +34,7 @@ namespace ConsoleAppParsing.JSE
                             optionsLogger.Info($"Запись в файл по пути {CSVFilePath}");
                             _csvWriter.Write(CSVFilePath, result.StateTablesJSE);
                             optionsLogger.Info($"Данные записаны {result.StateTablesJSE.Count} из {result.StateTablesJSE.Count}");
+                            //отправка на сервер методом пост
                         }
                         else
                         {
