@@ -12,6 +12,8 @@ namespace ConsoleAppParsing.JSE
         private readonly string CSVFilePath = $@"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\parsingOptions\Options_{dateGetOptions}.csv";
         private static Logger optionsLogger = LogManager.GetCurrentClassLogger();
         private CsvWriter _csvWriter = new CsvWriter();
+        private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
+        private readonly string _webServiceUrl = "https://localhost:44352/api/File/UploadFiles";
         public string GetOptions()
         {
             HttpClient httpClient = new HttpClient();
@@ -35,6 +37,7 @@ namespace ConsoleAppParsing.JSE
                             _csvWriter.Write(CSVFilePath, result.StateTablesJSE);
                             optionsLogger.Info($"Данные записаны {result.StateTablesJSE.Count} из {result.StateTablesJSE.Count}");
                             //отправка на сервер методом пост
+                            Send();
                         }
                         else
                         {
@@ -54,6 +57,23 @@ namespace ConsoleAppParsing.JSE
             else
             {
                 optionsLogger.Error($"Подключение не удалось! {_resultJSE.StatusCode}");
+            }
+            return null;
+        }
+        private string Send()
+        {
+            optionsLogger.Info($"Подключение к веб-сервису.");
+            HttpClient httpClient = new HttpClient();
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, _webServiceUrl);
+            var _result = httpClient.SendAsync(requestMessage).Result;
+            optionsLogger.Info($"Подключение удалось: {_result.StatusCode}");
+            if (_httpResponseMessage.IsSuccessStatusCode)
+            {
+                optionsLogger.Info($"Подключение прошло успешно! {_httpResponseMessage.StatusCode}");
+            }
+            else
+            {
+                optionsLogger.Error($"Подключиться к веб-сервису не удалось! {_httpResponseMessage.StatusCode}");
             }
             return null;
         }
