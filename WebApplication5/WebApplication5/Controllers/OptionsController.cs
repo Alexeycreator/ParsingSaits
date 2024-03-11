@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using WebApplication5.Models;
 
 namespace WebApplication5.Controllers
@@ -10,19 +10,23 @@ namespace WebApplication5.Controllers
     [Route("[controller]")]
     public class OptionsController : ControllerBase
     {
-        [HttpGet]
+        private readonly string filesPath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\WebApplication5\WebApplication5\UploadedFiles\";
+        [HttpGet("getOptions")]
         public List<OptionsModel> Get()
         {
-            var optionsModel = new List<OptionsModel>();
-            for (int i = 1; i < 10; i++)
+            string _optionsfilesPath = $@"{filesPath}\Options\";
+            List<OptionsModel> _optionsModel = new List<OptionsModel>();
+            string[] files = Directory.GetFiles(_optionsfilesPath);
+            foreach(var _options in files)
             {
-                var _optionsModel = new OptionsModel
+                OptionsModel options = new OptionsModel
                 {
-                    FileName = $"fileName {i}",
+                    FileName = Path.GetFileName(_options),
+                    Type = "jse",
                 };
-                optionsModel.Add(_optionsModel);
+                _optionsModel.Add(options);
             }
-            return optionsModel;
+            return _optionsModel;
         }
     }
 }

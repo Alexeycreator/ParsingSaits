@@ -21,7 +21,7 @@ namespace WebApplication5.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpPost("upload")]
-        public async Task<IActionResult> Upload()
+        public async Task<IActionResult> Upload([FromForm] IFormCollection files, [FromQuery] string type)
         {
             if(Request.Form.Files.Count == 0)
             {
@@ -35,30 +35,8 @@ namespace WebApplication5.Controllers
             }
             return Ok("Файл загружен");
         }
-        [HttpPost("[action]")]
-        public IActionResult UploadFiles(List<IFormFile> files)
-        {
-            //Если файлов нет, то вернуть ошибку
-            if(files.Count == 0)
-            {
-                return BadRequest();
-            }
-            //Задаем путь, куда загружать файлы
-            string dirPath = Path.Combine(_webHostEnvironment.ContentRootPath, "UploadedFiles");
-            //пробегаемся по коллекции файлов и добавляем их в папку
-            foreach(var file in files)
-            {
-                string filePath = Path.Combine(dirPath, file.FileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
-            return Ok("Файлы загружены!");
-        }
-        //Задаем метод http и указываем route адрес, передаем в метод название файла, который нужно скачать
         [HttpGet]
-        [Route("DownloadFile")]
+        [Route("download")]
         public IActionResult DownloadFile(string fileName)
         {
             //Задаем путь, откуда смотреть файлы и в дальнейшем скачивать
@@ -72,5 +50,27 @@ namespace WebApplication5.Controllers
             var bytes = System.IO.File.ReadAllBytes(filePath);
             return File(bytes, contentType, Path.GetFileName(filePath));
         }
+        //[HttpPost("[action]")]
+        //public IActionResult UploadFiles(List<IFormFile> files)
+        //{
+        //    //Если файлов нет, то вернуть ошибку
+        //    if(files.Count == 0)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    //Задаем путь, куда загружать файлы
+        //    string dirPath = Path.Combine(_webHostEnvironment.ContentRootPath, "UploadedFiles");
+        //    //пробегаемся по коллекции файлов и добавляем их в папку
+        //    foreach(var file in files)
+        //    {
+        //        string filePath = Path.Combine(dirPath, file.FileName);
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            file.CopyTo(stream);
+        //        }
+        //    }
+        //    return Ok("Файлы загружены!");
+        //}
+        //Задаем метод http и указываем route адрес, передаем в метод название файла, который нужно скачать
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using WebApplication5.Models;
 
 namespace WebApplication5.Controllers
@@ -8,19 +9,23 @@ namespace WebApplication5.Controllers
     [Route("[controller]")]
     public class BondsController : ControllerBase
     {
-        [HttpGet]
-        public List<BondsModel> Get(string type)
+        private readonly string filesPath = @"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\WebApplication5\WebApplication5\UploadedFiles\";
+        [HttpGet("getBonds")]
+        public List<BondsModel> Get()
         {
-            var bondsModel = new List<BondsModel>();
-            for (int i = 1; i < 10; i++)
+            string _bondsfilesPath = $@"{filesPath}\Bonds\";
+            List<BondsModel> _optionsModel = new List<BondsModel>();
+            string[] files = Directory.GetFiles(_bondsfilesPath);
+            foreach (var _bonds in files)
             {
-                var _bondsModel = new BondsModel
+                BondsModel bonds = new BondsModel
                 {
-                    FileName = $"fileName {i}",
+                    FileName = Path.GetFileName(_bonds),
+                    Type = "wb",
                 };
-                bondsModel.Add(_bondsModel);
+                _optionsModel.Add(bonds);
             }
-            return bondsModel;
+            return _optionsModel;
         }
     }
 }
