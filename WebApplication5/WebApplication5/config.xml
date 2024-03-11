@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<files>
+		<type>
+			jse
+		</type>
+		<name>
+			C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\WebApplication5\WebApplication5\UploadedFiles\
+		</name>
+	</files>
+	<files>
+		<type>
+			wb
+		</type>
+		<name>
+			C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\parsingBonds
+		</name>
+	</files>
+</configuration>

@@ -30,7 +30,7 @@ namespace WebApplication5
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication5", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Веб-сервис", Version = "v1" });
             });
         }
 

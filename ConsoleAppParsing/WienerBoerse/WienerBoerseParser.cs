@@ -4,13 +4,14 @@ using HtmlAgilityPack;
 using System.Linq;
 using System;
 using NLog;
+using System.Threading.Tasks;
 
 namespace ConsoleAppParsing
 {
     class WienerBoerseParser
     {
         private string _wienerBoerseUrl;
-        private string _webServiceUrl;
+        private readonly string _webServiceUrl = $"https://localhost:44352/api/File/upload";
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly HttpResponseMessage _httpResponseMessage = new HttpResponseMessage();
         private static Logger bondsLogger = LogManager.GetCurrentClassLogger();
@@ -18,15 +19,15 @@ namespace ConsoleAppParsing
         private static string dateGetBonds = DateTime.Now.ToShortDateString();
         private readonly string CSVFilePath = $@"C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\parsingBonds\Bonds_{dateGetBonds}.csv";
         private CsvWriter _csvWriter = new CsvWriter();
+        private FileSender _fileSender = new FileSender();
+        private readonly string _type = "wb";
         public string GetBonds()
         {
             List<Bond> bonds = new List<Bond>();
             do
             {
                 string urlWienerBoerse = $"https://www.wienerborse.at/en/bonds/?c7928-page={numberPage}&per-page=50&c";
-                string urlRestWebService = $"https://localhost:44352/api/File/UploadFiles";
                 _wienerBoerseUrl = urlWienerBoerse;
-                _webServiceUrl = urlRestWebService;
                 bondsLogger.Info($"Подключение к странице сайта по адресу: {_wienerBoerseUrl}");
                 var _httpResponseMessage = _httpClient.GetAsync(_wienerBoerseUrl).Result;
                 if (_httpResponseMessage.IsSuccessStatusCode)
@@ -88,7 +89,7 @@ namespace ConsoleAppParsing
                                     bondsLogger.Error("Количество столбцов на сайте изменилось. Данные не удается получить.");
                                 }
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 bondsLogger.Error($"Ошибка: {ex}");
                             }
@@ -108,28 +109,11 @@ namespace ConsoleAppParsing
                 _csvWriter.Write(CSVFilePath, bonds);
                 bondsLogger.Info($"Данные записаны в файл. Количество {bonds.Count} из {bonds.Count}");
                 //отправка на сервер
-                Send();
+                _fileSender.Send(CSVFilePath, _webServiceUrl, _type);
             }
             catch (Exception ex)
             {
                 bondsLogger.Error($"Ошибка: {ex}");
-            }
-            return null;
-        }
-        private string Send()
-        {
-            bondsLogger.Info($"Подключение к веб-сервису.");
-            HttpClient httpClient = new HttpClient();
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, _webServiceUrl);
-            var _result = httpClient.SendAsync(requestMessage).Result;
-            bondsLogger.Info($"Подключение удалось: {_result.StatusCode}");
-            if (_httpResponseMessage.IsSuccessStatusCode)
-            {
-                bondsLogger.Info($"Подключение прошло успешно! {_httpResponseMessage.StatusCode}");
-            }
-            else
-            {
-                bondsLogger.Error($"Подключиться к веб-сервису не удалось! {_httpResponseMessage.StatusCode}");
             }
             return null;
         }

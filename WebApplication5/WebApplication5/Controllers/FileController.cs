@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace WebApplication5.Controllers
 {
@@ -12,9 +15,25 @@ namespace WebApplication5.Controllers
     public class FileController : ControllerBase
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private static string dateGet = DateTime.Now.ToShortDateString();
         public FileController(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
+        }
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload()
+        {
+            if(Request.Form.Files.Count == 0)
+            {
+                return BadRequest("Нет файла!");
+            }
+            var file = Request.Form.Files[0];
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles", file.FileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+            return Ok("Файл загружен");
         }
         [HttpPost("[action]")]
         public IActionResult UploadFiles(List<IFormFile> files)
