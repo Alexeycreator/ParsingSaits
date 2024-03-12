@@ -4,7 +4,6 @@ using HtmlAgilityPack;
 using System.Linq;
 using System;
 using NLog;
-using System.Threading.Tasks;
 
 namespace ConsoleAppParsing
 {
