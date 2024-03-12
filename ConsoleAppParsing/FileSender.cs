@@ -27,6 +27,8 @@ namespace ConsoleAppParsing
                         using (var fileStream = System.IO.File.OpenRead(CSVFilePath))
                         {
                             formDataFile.Add(new StreamContent(fileStream), "file", $"bonds_{dateGet}.csv");
+                            //определение типа и добавление в папку по данному типу
+                            formDataFile.Add(new StringContent(_type), "_typeFile");
                             var responseFile = await httpClient.PostAsync(_webServiceUrl, formDataFile);
                             if (responseFile.IsSuccessStatusCode)
                             {
@@ -44,6 +46,8 @@ namespace ConsoleAppParsing
                         using (var fileStream = System.IO.File.OpenRead(CSVFilePath))
                         {
                             formDataFile.Add(new StreamContent(fileStream), "file", $"options_{dateGet}.csv");
+                            //определение типа и добавление в папку по данному типу
+                            formDataFile.Add(new StringContent(_type), "_typeFile");
                             var responseFile = await httpClient.PostAsync(_webServiceUrl, formDataFile);
                             if (responseFile.IsSuccessStatusCode)
                             {

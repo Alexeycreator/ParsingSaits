@@ -13,7 +13,7 @@ namespace WebApplication5.Controllers
         [HttpGet("getBonds")]
         public List<BondsModel> Get()
         {
-            string _bondsfilesPath = $@"{filesPath}\Bonds\";
+            string _bondsfilesPath = $@"{filesPath}\wb\";
             List<BondsModel> _optionsModel = new List<BondsModel>();
             string[] files = Directory.GetFiles(_bondsfilesPath);
             foreach (var _bonds in files)

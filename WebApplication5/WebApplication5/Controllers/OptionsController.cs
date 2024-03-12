@@ -14,7 +14,7 @@ namespace WebApplication5.Controllers
         [HttpGet("getOptions")]
         public List<OptionsModel> Get()
         {
-            string _optionsfilesPath = $@"{filesPath}\Options\";
+            string _optionsfilesPath = $@"{filesPath}\jse\";
             List<OptionsModel> _optionsModel = new List<OptionsModel>();
             string[] files = Directory.GetFiles(_optionsfilesPath);
             foreach(var _options in files)

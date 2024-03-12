@@ -17,20 +17,19 @@ namespace WebApplication5.Controllers
         [HttpGet("getAllContent")]
         public List<AllContentModel> GetAll()
         {
-            string _optionsfilesPath = $@"{filesPath}\Options\";
-            string _bondsfilesPath = $@"{filesPath}\Bonds\";
+            string _optionsfilesPath = $@"{filesPath}\jse\";
+            string _bondsfilesPath = $@"{filesPath}\wb\";
             List<AllContentModel> _allContentModel = new List<AllContentModel>();
             if (_optionsfilesPath.Length > 0 || _bondsfilesPath.Length > 0)
             {
                 string[] _optionsFiles = Directory.GetFiles(_optionsfilesPath);
                 string[] _bondsFiles = Directory.GetFiles(_bondsfilesPath);
-                var files = _optionsFiles.Union(_bondsFiles);
+                var files = _optionsFiles.Concat(_bondsFiles);
                 foreach (var _allContent in files)
                 {
                     AllContentModel allContent = new AllContentModel
                     {
                         FileName = Path.GetFileName(_allContent),
-                        Type = "jse"
                     };
                     _allContentModel.Add(allContent);
                 }
