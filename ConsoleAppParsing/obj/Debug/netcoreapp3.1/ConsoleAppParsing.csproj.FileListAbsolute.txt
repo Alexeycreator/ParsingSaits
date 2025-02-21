@@ -25,7 +25,6 @@ C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.AssemblyInfoInputs.cache
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.AssemblyInfo.cs
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.csproj.CoreCompileInputs.cache
-C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.csproj.CopyComplete
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.dll
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.pdb
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.genruntimeconfig.cache
@@ -33,3 +32,5 @@ C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\NLog.config
 C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\bin\Debug\netcoreapp3.1\NLog.dll
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleAppParsing.sourcelink.json
+C:\Users\Алексей\Desktop\Учеба\github\ParsingSaits\ConsoleAppParsing\obj\Debug\netcoreapp3.1\ConsoleA.D9596AF6.Up2Date
